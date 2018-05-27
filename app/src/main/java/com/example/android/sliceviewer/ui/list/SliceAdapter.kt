@@ -74,7 +74,14 @@ class SliceViewHolder(
         )
 
         uriGroup.setOnClickListener {
-            context.startActivity(Intent(Intent.ACTION_VIEW, uri.convertToSliceViewerScheme()))
+            try {
+                context.startActivity(Intent(Intent.ACTION_VIEW, uri.convertToSliceViewerScheme()))
+            }
+            catch (e: ActivityNotFoundException)
+            {
+                e.printStackTrace()
+                Toast.makeText(context, "Please specify full URI/URL to handle this Intent", Toast.LENGTH_LONG).show()
+            }
         }
         selectedMode.observe(lifecycleOwner, Observer {
             sliceView.mode = it ?: SliceView.MODE_LARGE
